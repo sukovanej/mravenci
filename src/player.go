@@ -7,6 +7,10 @@ type Player interface {
 	GetWeapons() int
 	GetCrystals() int
 
+	GetBuilders() int
+	GetSoldiers() int
+	GetMages() int
+
 	DiffCrystals(diff int)
 	DiffBricks(diff int)
 	DiffWeapons(diff int)
@@ -123,3 +127,7 @@ func (p *player) DiffAllStats() {
 func (p *player) GetBricks() int   { return p.bricks }
 func (p *player) GetWeapons() int  { return p.weapons }
 func (p *player) GetCrystals() int { return p.crystals }
+
+func (p *player) GetBuilders() int { return p.builders }
+func (p *player) GetSoldiers() int { return p.soldiers }
+func (p *player) GetMages() int    { return p.mages }

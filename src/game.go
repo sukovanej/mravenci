@@ -86,7 +86,7 @@ func (game *game) cli() (CardAction, Card, int) {
 		text = text[:len(text)-1]
 
 		if text == "help" {
-			fmt.Println(" - type the number of the card you desire to play\n - type `discard <number>` or `x <number>` to discard the card\n")
+			fmt.Printf(" - type the number of the card you desire to play\n - type `discard <number>` or `x <number>` to discard the card\n\n")
 			continue
 		} else {
 			numberMatched, _ := regexp.MatchString(`^[0-9]$`, text)
