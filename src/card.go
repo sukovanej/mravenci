@@ -51,12 +51,17 @@ func NewCardsPackage() CardsPackage {
 		&BaseCard{},
 		&FenceCard{},
 		&SchoolCard{},
+<<<<<<< HEAD
 		&SwatCard{},
 		&FortCard{},
 		&WainCard{},
 		&BabylonCard{},
 		&ConjureBricksCard{},
 		&SorcererCard{},
+=======
+		&RecruitingCard{},
+		&PixiesCard{},
+>>>>>>> new cards recruiting, pixies, thief
 	)
 	return cardsPackage
 }
@@ -163,3 +168,21 @@ type SorcererCard struct{}
 func (_ *SorcererCard) Play(me Player, opponent Player) { me.DiffMages(1) }
 func (_ *SorcererCard) Render() string                  { return "Sorcerer - Soldiers +1" }
 func (_ *SorcererCard) GetConsumption() CardConsumption { return CardConsumption{8, Crystals} }
+
+// Recruiting
+
+type RecruitingCard struct{}
+
+func (_ *RecruitingCard) Play(me Player, opponent Player) { me.DiffSoldiers(1)  }
+func (_ *RecruitingCard) Render() string                  { return "Recruiting - Soldiers +1"}
+func (_ *RecruitingCard) GetConsumption() CardConsumption { return CardConsumption{8, Weapons}}
+
+// Pixies
+
+type PixiesCard struct{}
+
+func (_ *PixiesCard) Play(me Player, opponent Player) { me.DiffCastle(22)}
+func (_ *PixiesCard) Render() string                  { return "Pixies - Castle +22"  }
+func (_ *PixiesCard) GetConsumption() CardConsumption { return CardConsumption{22, Crystals}}
+
+
