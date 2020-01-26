@@ -44,6 +44,12 @@ func NewCardsPackage() CardsPackage {
 		&BabylonCard{},
 		&ConjureBricksCard{},
 		&SorcererCard{},
+		&DestroyWeaponsCard{},
+		&DestroyCrystalsCard{},
+		&RaiderCard{},
+		&DefenseCard{},
+		&TowerCard{},
+		&WallCard{},
 	)
 	return cardsPackage
 }
@@ -150,3 +156,55 @@ type SorcererCard struct{}
 func (_ *SorcererCard) Play(me Player, opponent Player) { me.SetMages(me.GetMages() + 1) }
 func (_ *SorcererCard) Render() string                  { return "Sorcerer - Soldiers +1" }
 func (_ *SorcererCard) GetConsumption() CardConsumption { return CardConsumption{8, Crystals} }
+
+// Destroy weapons card
+
+type DestroyWeaponsCard struct{}
+
+func (_ *DestroyWeaponsCard) Play(me Player, opponent Player) {
+	opponent.SetWeapons(opponent.GetWeapons() - 8)
+}
+func (_ *DestroyWeaponsCard) Render() string                  { return "Destroy weapons - Weapons of your enemy -8" }
+func (_ *DestroyWeaponsCard) GetConsumption() CardConsumption { return CardConsumption{4, Crystals} }
+
+// Destroy crystals card
+
+type DestroyCrystalsCard struct{}
+
+func (_ *DestroyCrystalsCard) Play(me Player, opponent Player) {
+	opponent.SetCrystals(opponent.GetCrystals() - 8)
+}
+func (_ *DestroyCrystalsCard) Render() string                  { return "Destroy crystals - Crystals of your enemy -8" }
+func (_ *DestroyCrystalsCard) GetConsumption() CardConsumption { return CardConsumption{4, Crystals} }
+
+// Raider card
+
+type RaiderCard struct{}
+
+func (_ *RaiderCard) Play(me Player, opponent Player) { opponent.Attack(4) }
+func (_ *RaiderCard) Render() string                  { return "Raider - Attack +4" }
+func (_ *RaiderCard) GetConsumption() CardConsumption { return CardConsumption{2, Weapons} }
+
+// Defense card
+
+type DefenseCard struct{}
+
+func (_ *DefenseCard) Play(me Player, opponent Player) { me.SetFence(me.GetFence() + 6) }
+func (_ *DefenseCard) Render() string                  { return "Defense - Fence +6" }
+func (_ *DefenseCard) GetConsumption() CardConsumption { return CardConsumption{3, Bricks} }
+
+// Tower card
+
+type TowerCard struct{}
+
+func (_ *TowerCard) Play(me Player, opponent Player) { me.SetCastle(me.GetCastle() + 5) }
+func (_ *TowerCard) Render() string                  { return "Tower - Castle +5" }
+func (_ *TowerCard) GetConsumption() CardConsumption { return CardConsumption{5, Bricks} }
+
+// Wall card
+
+type WallCard struct{}
+
+func (_ *WallCard) Play(me Player, opponent Player) { me.SetFence(me.GetFence() + 3) }
+func (_ *WallCard) Render() string                  { return "Wall - Fence +3" }
+func (_ *WallCard) GetConsumption() CardConsumption { return CardConsumption{1, Bricks} }
