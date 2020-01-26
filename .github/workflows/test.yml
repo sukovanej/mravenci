@@ -1,0 +1,16 @@
+on: [push, pull_request]
+name: Test
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.x
+    - name: Checkout code
+      uses: actions/checkout@v1
+    - name: Test formatting
+      run: test -z $(gofmt -l src main.go)
+    - name: Test
+      run: go test ./...
