@@ -51,17 +51,15 @@ func NewCardsPackage() CardsPackage {
 		&BaseCard{},
 		&FenceCard{},
 		&SchoolCard{},
-<<<<<<< HEAD
 		&SwatCard{},
 		&FortCard{},
 		&WainCard{},
 		&BabylonCard{},
 		&ConjureBricksCard{},
 		&SorcererCard{},
-=======
 		&RecruitingCard{},
 		&PixiesCard{},
->>>>>>> new cards recruiting, pixies, thief
+		&ThiefCard{},
 	)
 	return cardsPackage
 }
@@ -184,5 +182,31 @@ type PixiesCard struct{}
 func (_ *PixiesCard) Play(me Player, opponent Player) { me.DiffCastle(22)}
 func (_ *PixiesCard) Render() string                  { return "Pixies - Castle +22"  }
 func (_ *PixiesCard) GetConsumption() CardConsumption { return CardConsumption{22, Crystals}}
+
+// Thief
+
+type ThiefCard struct{}
+
+func transfereMaterial(
+	meDiff func(int), 
+	opponentDiff func(int),
+	opponentGet func() int,
+) {
+	opponentDiff(-5)
+	meDiff(5)
+
+	if b := opponentGet(); b < 0 {
+		meDiff(b)
+		opponentDiff(-b)
+	}
+}
+
+func (_ *ThiefCard) Play(me Player, opponent Player) {
+	transfereMaterial(me.DiffBricks, opponent.DiffBricks, opponent.GetBricks)
+	transfereMaterial(me.DiffWeapons, opponent.DiffWeapons, opponent.GetWeapons)
+	transfereMaterial(me.DiffCrystals, opponent.DiffCrystals, opponent.GetCrystals)
+}
+func (_ *ThiefCard) Render() string                  { return "Thief - Transfer stocks of your enemy 5"}
+func (_ *ThiefCard) GetConsumption() CardConsumption { return CardConsumption{15, Weapons}}
 
 
