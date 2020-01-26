@@ -16,19 +16,6 @@ const (
 	Crystals
 )
 
-func RenderMaterial(material Material) string {
-	switch material {
-	case Bricks:
-		return "Bricks"
-	case Weapons:
-		return "Weapons"
-	case Crystals:
-		return "Crystals"
-	}
-
-	panic("Unknown material")
-}
-
 type CardConsumption struct {
 	Amount   int
 	Material Material
@@ -51,17 +38,15 @@ func NewCardsPackage() CardsPackage {
 		&BaseCard{},
 		&FenceCard{},
 		&SchoolCard{},
-<<<<<<< HEAD
 		&SwatCard{},
 		&FortCard{},
 		&WainCard{},
 		&BabylonCard{},
 		&ConjureBricksCard{},
 		&SorcererCard{},
-=======
 		&RecruitingCard{},
 		&PixiesCard{},
->>>>>>> new cards recruiting, pixies, thief
+		&ThiefCard{},
 	)
 	return cardsPackage
 }
@@ -98,7 +83,7 @@ func (_ *AttackCard) GetConsumption() CardConsumption { return CardConsumption{1
 
 type BaseCard struct{}
 
-func (_ *BaseCard) Play(me Player, opponent Player) { me.DiffCastle(2) }
+func (_ *BaseCard) Play(me Player, opponent Player) { me.SetCastle(me.GetCastle() + 2) }
 func (_ *BaseCard) Render() string                  { return "Base - Castle +2" }
 func (_ *BaseCard) GetConsumption() CardConsumption { return CardConsumption{1, Bricks} }
 
@@ -106,7 +91,7 @@ func (_ *BaseCard) GetConsumption() CardConsumption { return CardConsumption{1, 
 
 type FenceCard struct{}
 
-func (_ *FenceCard) Play(me Player, opponent Player) { me.DiffFence(22) }
+func (_ *FenceCard) Play(me Player, opponent Player) { me.SetFence(me.GetFence() + 22) }
 func (_ *FenceCard) Render() string                  { return "Fence - Fence +20" }
 func (_ *FenceCard) GetConsumption() CardConsumption { return CardConsumption{12, Bricks} }
 
@@ -114,7 +99,7 @@ func (_ *FenceCard) GetConsumption() CardConsumption { return CardConsumption{12
 
 type SchoolCard struct{}
 
-func (_ *SchoolCard) Play(me Player, opponent Player) { me.DiffBuilders(1) }
+func (_ *SchoolCard) Play(me Player, opponent Player) { me.SetBuilders(me.GetBuilders() + 1) }
 func (_ *SchoolCard) Render() string                  { return "School - Builders +1" }
 func (_ *SchoolCard) GetConsumption() CardConsumption { return CardConsumption{8, Bricks} }
 
@@ -122,7 +107,7 @@ func (_ *SchoolCard) GetConsumption() CardConsumption { return CardConsumption{8
 
 type SwatCard struct{}
 
-func (_ *SwatCard) Play(me Player, opponent Player) { opponent.DiffCastle(-10) }
+func (_ *SwatCard) Play(me Player, opponent Player) { opponent.SetCastle(opponent.GetCastle() - 10) }
 func (_ *SwatCard) Render() string                  { return "SWAT - Castle of your enemy -10" }
 func (_ *SwatCard) GetConsumption() CardConsumption { return CardConsumption{18, Weapons} }
 
@@ -130,7 +115,7 @@ func (_ *SwatCard) GetConsumption() CardConsumption { return CardConsumption{18,
 
 type FortCard struct{}
 
-func (_ *FortCard) Play(me Player, opponent Player) { me.DiffCastle(20) }
+func (_ *FortCard) Play(me Player, opponent Player) { me.SetCastle(me.GetCastle() + 20) }
 func (_ *FortCard) Render() string                  { return "Fort - Castle of your enemy -10" }
 func (_ *FortCard) GetConsumption() CardConsumption { return CardConsumption{18, Bricks} }
 
@@ -139,8 +124,8 @@ func (_ *FortCard) GetConsumption() CardConsumption { return CardConsumption{18,
 type WainCard struct{}
 
 func (_ *WainCard) Play(me Player, opponent Player) {
-	me.DiffCastle(8)
-	opponent.DiffCastle(-4)
+	me.SetCastle(me.GetCastle() + 8)
+	opponent.SetCastle(opponent.GetCastle() - 4)
 }
 func (_ *WainCard) Render() string                  { return "Wain - Castle +8, Castle of your enemy -4" }
 func (_ *WainCard) GetConsumption() CardConsumption { return CardConsumption{10, Bricks} }
@@ -149,7 +134,7 @@ func (_ *WainCard) GetConsumption() CardConsumption { return CardConsumption{10,
 
 type BabylonCard struct{}
 
-func (_ *BabylonCard) Play(me Player, opponent Player) { me.DiffCastle(32) }
+func (_ *BabylonCard) Play(me Player, opponent Player) { me.SetCastle(me.GetCastle() + 32) }
 func (_ *BabylonCard) Render() string                  { return "Babylon - Castle +32" }
 func (_ *BabylonCard) GetConsumption() CardConsumption { return CardConsumption{39, Bricks} }
 
@@ -157,7 +142,7 @@ func (_ *BabylonCard) GetConsumption() CardConsumption { return CardConsumption{
 
 type ConjureBricksCard struct{}
 
-func (_ *ConjureBricksCard) Play(me Player, opponent Player) { me.DiffBricks(8) }
+func (_ *ConjureBricksCard) Play(me Player, opponent Player) { me.SetBricks(me.GetBricks() + 8) }
 func (_ *ConjureBricksCard) Render() string                  { return "Conjure bricks - Bricks +8" }
 func (_ *ConjureBricksCard) GetConsumption() CardConsumption { return CardConsumption{4, Crystals} }
 
@@ -165,7 +150,7 @@ func (_ *ConjureBricksCard) GetConsumption() CardConsumption { return CardConsum
 
 type SorcererCard struct{}
 
-func (_ *SorcererCard) Play(me Player, opponent Player) { me.DiffMages(1) }
+func (_ *SorcererCard) Play(me Player, opponent Player) { me.SetMages(me.GetMages() + 1) }
 func (_ *SorcererCard) Render() string                  { return "Sorcerer - Soldiers +1" }
 func (_ *SorcererCard) GetConsumption() CardConsumption { return CardConsumption{8, Crystals} }
 
@@ -173,16 +158,41 @@ func (_ *SorcererCard) GetConsumption() CardConsumption { return CardConsumption
 
 type RecruitingCard struct{}
 
-func (_ *RecruitingCard) Play(me Player, opponent Player) { me.DiffSoldiers(1)  }
-func (_ *RecruitingCard) Render() string                  { return "Recruiting - Soldiers +1"}
-func (_ *RecruitingCard) GetConsumption() CardConsumption { return CardConsumption{8, Weapons}}
+func (_ *RecruitingCard) Play(me Player, opponent Player) { me.SetSoldiers(me.GetSoldiers() + 1) }
+func (_ *RecruitingCard) Render() string                  { return "Recruiting - Soldiers +1" }
+func (_ *RecruitingCard) GetConsumption() CardConsumption { return CardConsumption{8, Weapons} }
 
 // Pixies
 
 type PixiesCard struct{}
 
-func (_ *PixiesCard) Play(me Player, opponent Player) { me.DiffCastle(22)}
-func (_ *PixiesCard) Render() string                  { return "Pixies - Castle +22"  }
-func (_ *PixiesCard) GetConsumption() CardConsumption { return CardConsumption{22, Crystals}}
+func (_ *PixiesCard) Play(me Player, opponent Player) { me.SetCastle(me.GetCastle() + 22) }
+func (_ *PixiesCard) Render() string                  { return "Pixies - Castle +22" }
+func (_ *PixiesCard) GetConsumption() CardConsumption { return CardConsumption{22, Crystals} }
 
+// Thief
 
+type ThiefCard struct{}
+
+func transfereMaterial(
+	meSet func(int),
+	meGet func() int,
+	opponentSet func(int),
+	opponentGet func() int,
+) {
+	opponentSet(opponentGet() - 5)
+	meSet(meGet() + 5)
+
+	if b := opponentGet(); b < 0 {
+		meSet(meGet() + b)
+		opponentSet(0)
+	}
+}
+
+func (_ *ThiefCard) Play(me Player, opponent Player) {
+	transfereMaterial(me.SetBricks, me.GetBricks, opponent.SetBricks, opponent.GetBricks)
+	transfereMaterial(me.SetWeapons, me.GetWeapons, opponent.SetWeapons, opponent.GetWeapons)
+	transfereMaterial(me.SetCrystals, me.GetCrystals, opponent.SetCrystals, opponent.GetCrystals)
+}
+func (_ *ThiefCard) Render() string                  { return "Thief - Transfer stocks of your enemy 5" }
+func (_ *ThiefCard) GetConsumption() CardConsumption { return CardConsumption{15, Weapons} }

@@ -6,5 +6,7 @@ import (
 
 func main() {
 	game := src.NewGame()
-	game.Start()
+	controller := src.NewController(game)
+
+	controller.Run()
 }
