@@ -11,7 +11,7 @@ type Player interface {
 	DiffBricks(diff int)
 	DiffWeapons(diff int)
 
-	DiffMagicians(diff int)
+	DiffMages(diff int)
 	DiffBuilders(diff int)
 	DiffSoldiers(diff int)
 
@@ -31,9 +31,9 @@ type Player interface {
 type player struct {
 	cards []Card
 
-	crystals, bricks, weapons     int
-	magicians, builders, soldiers int
-	castle, fence                 int
+	crystals, bricks, weapons int
+	mages, builders, soldiers int
+	castle, fence             int
 }
 
 func NewPlayer(cardsPackage CardsPackage) Player {
@@ -42,7 +42,7 @@ func NewPlayer(cardsPackage CardsPackage) Player {
 	player.bricks = 2
 	player.weapons = 2
 
-	player.magicians = 2
+	player.mages = 2
 	player.builders = 2
 	player.soldiers = 2
 
@@ -68,8 +68,8 @@ func (p *player) DiffWeapons(diff int) {
 	p.weapons += diff
 }
 
-func (p *player) DiffMagicians(diff int) {
-	p.magicians += diff
+func (p *player) DiffMages(diff int) {
+	p.mages += diff
 }
 
 func (p *player) DiffBuilders(diff int) {
@@ -106,16 +106,16 @@ func (p *player) ReplaceCard(pos int, newCard Card) {
 }
 
 func (p *player) Render() string {
-	return fmt.Sprintf(" Builders: (+%d, %d)\n Soldiers: (+%d, %d)\n Magicians: (+%d, %d)\n Castle: %d\n Fence: %d",
+	return fmt.Sprintf(" Builders: (+%d, %d)\n Soldiers: (+%d, %d)\n Mages: (+%d, %d)\n Castle: %d\n Fence: %d",
 		p.builders, p.bricks,
 		p.soldiers, p.weapons,
-		p.magicians, p.crystals,
+		p.mages, p.crystals,
 		p.castle, p.fence,
 	)
 }
 
 func (p *player) DiffAllStats() {
-	p.DiffCrystals(p.magicians)
+	p.DiffCrystals(p.mages)
 	p.DiffBricks(p.builders)
 	p.DiffWeapons(p.soldiers)
 }
