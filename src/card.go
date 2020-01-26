@@ -51,6 +51,12 @@ func NewCardsPackage() CardsPackage {
 		&BaseCard{},
 		&FenceCard{},
 		&SchoolCard{},
+		&SwatCard{},
+		&FortCard{},
+		&WainCard{},
+		&BabylonCard{},
+		&ConjureBricksCard{},
+		&SorcererCard{},
 	)
 	return cardsPackage
 }
@@ -106,3 +112,54 @@ type SchoolCard struct{}
 func (_ *SchoolCard) Play(me Player, opponent Player) { me.DiffBuilders(1) }
 func (_ *SchoolCard) Render() string                  { return "School - Builders +1" }
 func (_ *SchoolCard) GetConsumption() CardConsumption { return CardConsumption{8, Bricks} }
+
+// Swat Card
+
+type SwatCard struct{}
+
+func (_ *SwatCard) Play(me Player, opponent Player) { opponent.DiffCastle(-10) }
+func (_ *SwatCard) Render() string                  { return "SWAT - Castle of your enemy -10" }
+func (_ *SwatCard) GetConsumption() CardConsumption { return CardConsumption{18, Weapons} }
+
+// Fort Card
+
+type FortCard struct{}
+
+func (_ *FortCard) Play(me Player, opponent Player) { me.DiffCastle(20) }
+func (_ *FortCard) Render() string                  { return "Fort - Castle of your enemy -10" }
+func (_ *FortCard) GetConsumption() CardConsumption { return CardConsumption{18, Bricks} }
+
+// Wain Card
+
+type WainCard struct{}
+
+func (_ *WainCard) Play(me Player, opponent Player) {
+	me.DiffCastle(8)
+	opponent.DiffCastle(-4)
+}
+func (_ *WainCard) Render() string                  { return "Wain - Castle +8, Castle of your enemy -4" }
+func (_ *WainCard) GetConsumption() CardConsumption { return CardConsumption{10, Bricks} }
+
+// Babylon Card
+
+type BabylonCard struct{}
+
+func (_ *BabylonCard) Play(me Player, opponent Player) { me.DiffCastle(32) }
+func (_ *BabylonCard) Render() string                  { return "Babylon - Castle +32" }
+func (_ *BabylonCard) GetConsumption() CardConsumption { return CardConsumption{39, Bricks} }
+
+// Conjure bricks Card
+
+type ConjureBricksCard struct{}
+
+func (_ *ConjureBricksCard) Play(me Player, opponent Player) { me.DiffBricks(8) }
+func (_ *ConjureBricksCard) Render() string                  { return "Conjure bricks - Bricks +8" }
+func (_ *ConjureBricksCard) GetConsumption() CardConsumption { return CardConsumption{4, Crystals} }
+
+// Sorcerer Card
+
+type SorcererCard struct{}
+
+func (_ *SorcererCard) Play(me Player, opponent Player) { me.DiffMages(1) }
+func (_ *SorcererCard) Render() string                  { return "Sorcerer - Soldiers +1" }
+func (_ *SorcererCard) GetConsumption() CardConsumption { return CardConsumption{8, Crystals} }
