@@ -1,7 +1,5 @@
 package src
 
-import "fmt"
-
 type Player interface {
 	GetBricks() int
 	GetWeapons() int
@@ -29,8 +27,6 @@ type Player interface {
 
 	GetCards() []Card
 	ReplaceCard(pos int, newCard Card)
-
-	Render() string
 }
 
 type player struct {
@@ -85,15 +81,6 @@ func (p *player) GetCards() []Card { return p.cards }
 
 func (p *player) ReplaceCard(pos int, newCard Card) {
 	p.cards[pos] = newCard
-}
-
-func (p *player) Render() string {
-	return fmt.Sprintf(" Builders: (+%d, %d)\n Soldiers: (+%d, %d)\n Mages: (+%d, %d)\n Castle: %d\n Fence: %d",
-		p.builders, p.bricks,
-		p.soldiers, p.weapons,
-		p.mages, p.crystals,
-		p.castle, p.fence,
-	)
 }
 
 func (p *player) GetBricks() int   { return p.bricks }
