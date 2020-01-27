@@ -19,6 +19,7 @@ type game struct {
 	blackPlayer, redPlayer        Player
 	currentPlayer, opponentPlayer Player
 	cardsPackage                  CardsPackage
+	round                         int
 }
 
 func NewGame() Game {
@@ -28,6 +29,7 @@ func NewGame() Game {
 	game.redPlayer = NewPlayer(game.cardsPackage)
 	game.currentPlayer = game.blackPlayer
 	game.opponentPlayer = game.redPlayer
+	game.round = 0
 	return game
 }
 
@@ -76,13 +78,17 @@ func (game *game) DiscardNthCard(card_index int) {
 
 func (game *game) StartRound() {
 	me := game.currentPlayer
-	me.SetBricks(me.GetBricks() + me.GetBuilders())
-	me.SetWeapons(me.GetWeapons() + me.GetSoldiers())
-	me.SetCrystals(me.GetCrystals() + me.GetMages())
+
+	if game.round > 0 {
+		me.SetBricks(me.GetBricks() + me.GetBuilders())
+		me.SetWeapons(me.GetWeapons() + me.GetSoldiers())
+		me.SetCrystals(me.GetCrystals() + me.GetMages())
+	}
 }
 
 func (game *game) EndRound() {
 	game.currentPlayer, game.opponentPlayer = game.opponentPlayer, game.currentPlayer
+	game.round++
 }
 
 func (game *game) GetCurrentPlayer() Player  { return game.currentPlayer }
