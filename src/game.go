@@ -61,11 +61,11 @@ func validateMove(player Player, card Card) bool {
 func consumeMaterial(player Player, consumption CardConsumption) {
 	switch consumption.Material {
 	case Bricks:
-		player.DiffBricks(-consumption.Amount)
+		player.SetBricks(player.GetBricks() - consumption.Amount)
 	case Weapons:
-		player.DiffWeapons(-consumption.Amount)
+		player.SetWeapons(player.GetWeapons() - consumption.Amount)
 	case Crystals:
-		player.DiffCrystals(-consumption.Amount)
+		player.SetCrystals(player.GetCrystals() - consumption.Amount)
 	}
 	return
 }
@@ -118,7 +118,12 @@ func (game *game) cli() (CardAction, Card, int) {
 func (game *game) Start() {
 	for {
 		clearTerminal()
-		game.currentPlayer.DiffAllStats()
+		me := game.currentPlayer
+
+		me.SetBricks(me.GetBricks() + me.GetBuilders())
+		me.SetWeapons(me.GetWeapons() + me.GetSoldiers())
+		me.SetCrystals(me.GetCrystals() + me.GetMages())
+
 		fmt.Println(game.Render())
 
 		action, card, index := game.cli()
