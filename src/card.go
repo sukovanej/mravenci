@@ -16,19 +16,6 @@ const (
 	Crystals
 )
 
-func RenderMaterial(material Material) string {
-	switch material {
-	case Bricks:
-		return "Bricks"
-	case Weapons:
-		return "Weapons"
-	case Crystals:
-		return "Crystals"
-	}
-
-	panic("Unknown material")
-}
-
 type CardConsumption struct {
 	Amount   int
 	Material Material
