@@ -39,9 +39,9 @@ type player struct {
 
 func NewPlayer(cardsPackage CardsPackage) Player {
 	player := &player{}
-	player.crystals = 2
-	player.bricks = 2
-	player.weapons = 2
+	player.crystals = 5
+	player.bricks = 5
+	player.weapons = 5
 
 	player.mages = 2
 	player.builders = 2
